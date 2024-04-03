@@ -7,7 +7,8 @@
     "build": "ng build",
     "watch": "ng build --watch --configuration development",
     "test": "ng test",
-    "electron": "ng build && electron ."
+    "electron": "nodemon --watch . --ignore dist --ext html,scss,ts,json --exec \"ng build && electron .\""
+
   },
   "private": true,
   "dependencies": {
