@@ -15,7 +15,14 @@
       "package.json"
     ],
     "win": {
-      "target": "nsis"
+      "target": "nsis",
+      "icon": "electron-icons/kitchen-electron-icon.ico"
+    },
+    "mac": {
+      "icon": "electron-icons/kitchen-electron-icon.icns"
+    },
+    "linux": {
+      "icon": "electron-icons/kitchen-electron-icon.png"
     },
     "nsis": {
       "oneClick": false,
