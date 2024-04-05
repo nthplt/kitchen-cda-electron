@@ -1,0 +1,110 @@
+<div class="bloc-container">
+    <h2>Propriétés de la recette</h2>
+    <div class="sub-bloc-container my-2" [formGroup]="recipeForm">
+        <div class="mb-3">
+            <label for="name" class="form-label">Name</label>
+            <input type="text" class="form-control" id="name" formControlName="name">
+        </div>
+        <div class="mb-3">
+            <label for="description" class="form-label">Description</label>
+            <textarea class="form-control" id="description" formControlName="description"></textarea>
+        </div>
+        <div class="mb-3">
+            <label for="image" class="form-label">Image</label>
+            <input type="file" (input)="selectFile($event)" class="form-control" id="image">
+        </div>
+        <div class="mb-3">
+            <label for="category" class="form-label">Catégorie</label>
+            <select class="form-select" id="category" formControlName="category">
+                <option value="salty">Salé</option>
+                <option value="sweet">Sucré</option>
+            </select>
+        </div>
+    </div>
+
+    <hr>
+
+    <h3>Ingrédients de la recette</h3>
+    <div class="my-2">
+        <div class="sub-bloc-container mb-3" *ngFor="let ing of ingredientsRecipe; let i=index;">
+            <div>
+                <div>
+                    <label for="value">Nom ingrédient:</label>
+                    <b *ngIf="ing.name">{{ingredientsRecipe[i].name}}</b>
+                    <select *ngIf="!ing.name" class="form-control" [ngModel]="''"
+                        (ngModelChange)="editIngredient($event, ing)" [id]="'value' + i">
+                        <option *ngFor="let ingData of listIngredientData" [value]="ingData.id">{{ingData.name}}
+                        </option>
+                    </select>
+                </div>
+                <div *ngIf="ing.name.length">
+                    <label [for]="'image' + i">Image ingrédient</label>
+                    <input type="file" (input)="selectFile($event, i)" class="form-control" [id]="'image' + i">
+                </div>
+            </div>
+            <div class="d-flex justify-content-end align-items-center gap-2 mt-2">
+                <button type="button" class="btn btn-danger" (click)="removeIng(i)">Supprimer l'ingrédient</button>
+            </div>
+        </div>
+        <div class="d-flex justify-content-end align-items-center gap-2 mt-2">
+            <button type="button" class="btn btn-secondary" (click)="addIng()">Ajouter un ingrédient</button>
+        </div>
+    </div>
+
+    <hr>
+
+    <h3>Etapes de la recette</h3>
+    <div class="my-2">
+        <div class="sub-bloc-container mb-3" *ngFor="let step of stepsRecipe; let i=index;">
+            <h4 *ngIf="step.instructions?.length">Instructions de l'étape</h4>
+            <div class="bloc-container mb-3" *ngFor="let instruction of step.instructions;">
+                <div>
+                    <label for="type">Type:</label>
+                    <select #instructionType class="form-control" [(ngModel)]="instruction.type" [id]="'value' + i">
+                        <option value="D_TXT">Texte</option>
+                        <option value="D_ING">Ingrédient</option>
+                        <option value="D_QNT">Quantité</option>
+                    </select>
+                </div>
+                <div *ngIf="instructionType.value === 'D_ING'">
+                    <label for="index">Ingrédient à ajouter:</label>
+                    <select class="form-control" [(ngModel)]="instruction.index" [id]="'index' + i">
+                        <option *ngFor="let ing of ingredientsRecipe; let ingRecipeIndex=index;"
+                            [value]="ingRecipeIndex">{{ing.name}}</option>
+                    </select>
+                </div>
+                <div *ngIf="instructionType.value === 'D_TXT' || instructionType.value === 'D_QNT'">
+                    <label for="value">Value:</label>
+                    <input class="form-control" [(ngModel)]="instruction.value" [id]="'type' + i" type="text">
+                </div>
+                <div *ngIf="instructionType.value === 'D_QNT'">
+                    <label for="unit">Unit:</label>
+                    <select class="form-control" [(ngModel)]="instruction.unit" [id]="'unit' + i">
+                        <option value="gram">gram</option>
+                        <option value="liter">liter</option>
+                        <option value="tablespoon">tablespoon</option>
+                        <option value="teaspoon">teaspoon</option>
+                        <option value="glass">glass</option>
+                    </select>
+                </div>
+            </div>
+            <h4>Image de l'étape</h4>
+            <div class="mb-3">
+                <label [for]="'image-recipe-' + i">Fichier image de l'étape:</label>
+                <input type="file" (input)="selectFile($event, undefined,i)" class="form-control"
+                    [id]="'image-recipe-' + i">
+            </div>
+
+            <div class="d-flex justify-content-end align-items-center gap-2 mt-2">
+                <button type="button" class="btn btn-secondary" (click)="removeStep(i)">Ajouter un outil</button>
+                <button type="button" class="btn btn-secondary" (click)="addInstruction(i)">Ajouter une
+                    instruction</button>
+                <button type="button" class="btn btn-danger" (click)="removeStep(i)">Supprimer l'étape</button>
+            </div>
+        </div>
+        <div class="d-flex justify-content-end align-items-center gap-2 mt-2">
+            <button type="button" class="btn btn-secondary" (click)="addStep()">Ajouter une étape</button>
+        </div>
+    </div>
+    <button type="submit" (click)="onSubmit()" class="btn btn-primary">Envoyer</button>
+</div>

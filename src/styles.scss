@@ -1,1 +1,20 @@
-/* You can add global styles to this file, and also import other style files */
+.bloc-container {
+    box-shadow: 0 2px 10px gray;
+    background-color: white;
+    padding: 0.75rem;
+    border-radius: 0.375rem;
+    height: 100%;
+}
+
+.sub-bloc-container {
+    padding: 0.75rem;
+    border-radius: 0.375rem;
+    height: 100%;
+    background-color: rgb(212, 212, 212);
+}
+
+.flex-all-center {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+}

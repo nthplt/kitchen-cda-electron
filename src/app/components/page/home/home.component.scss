@@ -1,0 +1,28 @@
+.home-recipe-list {
+    display: flex;
+    flex-wrap: wrap;
+    justify-content: center;
+    gap: 3rem;
+}
+
+.recipe-card {
+    width: 13rem;
+    list-style-type: none;
+    display: flex;
+    justify-content: space-around;
+    align-items: center;
+    flex-direction: column;
+    border: 1px solid gray;
+    border-radius: 10px;
+    padding: 1rem;
+
+    .card-img-recipe {
+        width: 7rem;
+        aspect-ratio: 1;
+        border-radius: 10px;
+    }
+
+    .card-body {
+        width: 100%;
+    }
+}

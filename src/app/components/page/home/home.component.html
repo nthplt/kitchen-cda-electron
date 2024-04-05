@@ -1,1 +1,13 @@
-<p>home works!</p>
+<h1>Site Recettes</h1>
+<div>
+    <ul class="home-recipe-list">
+        <li [routerLink]="[ '/recipe/', recipe.id ]" *ngFor="let recipe of listRecipes" class="recipe-card pe-auto">
+            <img [src]="recipe.image || 'assets/image/image-not-enable.webp'" class="card-img-recipe" alt="...">
+            <div class="card-body">
+                <p class="card-name">{{recipe.name}}</p>
+                <hr>
+                <p class="card-description">{{recipe.description}}</p>
+            </div>
+        </li>
+    </ul>
+</div>

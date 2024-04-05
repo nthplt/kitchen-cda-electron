@@ -1,0 +1,23 @@
+<div *ngIf="recipe">
+    <div class="header-recipe flex-all-center">
+        <h1 class="fs-2 text-white">Informations de la recette : {{recipe.name}}</h1>
+        <img class="recipe-img" *ngIf="recipe.image" [src]="recipe.image" alt="Image recette">
+        <div class="recipe-img w-100 h-100" *ngIf="!recipe.image"></div>
+        <div class="recipe-bg-b"></div>
+    </div>
+    <div class="bloc-container">
+        <p class="fs-4 text-center">{{recipe.description}}</p>
+        <p class="fs-5">Catégorie : {{recipe.category === "sweet" ? "sucré" : "salé"}}</p>
+    </div>
+    <p class="text-center my-3">Recette pour <input [(ngModel)]="personMultiplicator" />
+        personne{{personMultiplicator > 1 ?
+        's' : ''}}</p>
+    <div *ngIf="recipe.steps">
+        <h3>Etapes de la recette</h3>
+        <div *ngFor="let step of recipe.steps;; let i=index" class="bloc-container mb-3 d-flex flex-column">
+            <b>Etape {{i + 1}}</b>
+            <p class="fs-4 text-center">{{step.instructions | displayInstructions : recipe : personMultiplicator}}</p>
+            <img *ngIf="step.image" class="image-step mx-auto" [src]="step.image" [alt]="'Image etape ' + i ">
+        </div>
+    </div>
+</div>

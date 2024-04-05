@@ -1,35 +1,30 @@
 import { UnitMeasure } from '../types/UnitMeasure';
-import { Image } from './Image';
 import { Ingredient } from './Ingredient';
+import { Instruction } from './Instruction';
 import { Quantity } from './Quantity';
 
 export class Recipe {
+  id?: string;
   name: string;
   description: string;
-  image?: Image;
-  categorie: 'salty' | 'sweet';
-  ingredients: {
-    ingredient: Ingredient;
-    quantity?: Quantity;
-  }[];
+  image?: string;
+  category: 'salty' | 'sweet';
+  ingredients: Ingredient[];
   steps: Array<{
-    instructions: Array<{
-      type: 'D_TXT' | 'D_ING' | 'D_QNT';
-      value?: string | number;
-      index?: number;
-      unit?: UnitMeasure;
-    }>;
-    image?: Image;
-    tools: number[];
+    instructions: Array<Instruction>;
+    image?: string;
   }>;
 
   constructor(object: any) {
+    if (object.id) {
+      this.id = object.id;
+    }
     this.name = object.name;
     this.description = object.description;
     if (object.image) {
       this.image = object.image;
     }
-    this.categorie = object.categorie;
+    this.category = object.category;
     this.ingredients = object.ingredients;
     this.steps = object.steps;
   }

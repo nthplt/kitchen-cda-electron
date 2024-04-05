@@ -1,0 +1,74 @@
+<div id="depot-documents" class="bloc-container">
+    <div class="upload-exe-header">
+        <h2 class="title-bloc">{{title}}</h2>
+        <div>
+            <div class="d-flex flex-column gap-2 my-2" *ngIf="percentsProgress.length">
+                <b *ngIf="!errorsFiles.length">Téléchargement {{isUploading ? "en cours" : "terminé"}}...
+                    {{getAveragePercent(percentsProgress)}}%</b>
+                <b *ngIf="errorsFiles.length">Erreur lors du téléchargement</b>
+            </div>
+            <button *ngIf="files.length && !isUploading && !percentsProgress.length"
+                class="button button-action ms-auto" (click)="uploadFiles()">
+                Enregistrer les documents
+            </button>
+            <button *ngIf="!isUploading && percentsProgress.length" class="button button-action ms-auto"
+                (click)="resetFiles()">
+                Transfert Suivant
+            </button>
+        </div>
+    </div>
+    <hr />
+    <div class="body-container" *ngIf="!files.length">
+        <!-- #region Drag and drop file -->
+        <div class="drop-background allowed-drop-area" [ngClass]="{ 'drag-entered': dragEntered }">
+            <div class="drop-container allowed-drop-area" [ngClass]="{ 'drag-entered': dragEntered }"
+                (click)="selectFileInput.click()">
+                <img src="assets/icons/download-2.svg" alt="Icône de téléchargement" class="download-icon" />
+                <div class="drag-text allowed-drop-area">
+                    <span class="fw-bold">Sélectionner un fichier</span> ou déposer le
+                    ici
+                </div>
+                <input type="file" multiple (input)="selectFile($event)" class="d-none" #selectFileInput />
+            </div>
+        </div>
+        <!-- #endregion -->
+        <!-- #region Error message -->
+        <div class="error-message-container">
+            <div *ngIf="!files.length && fileSelectError" class="error-message text-center">
+                Une erreur est survenue lors de la selection des fichiers, format '{{inputTypeExpected.join("', '")}}'
+                attendu(s)
+            </div>
+        </div>
+        <!-- #endregion -->
+    </div>
+    <div class="button-action-container" *ngIf="files.length">
+        <div class="d-flex flex-column my-3">
+            <div class="position-relative" *ngFor="let file of files; let index = index">
+                <div class="d-flex justify-content-between align-items-center flex-wrap">
+                    <p class="w-80 text-start fs-6 m-0 fw-semibold">
+                        {{file.name}}
+                    </p>
+                </div>
+                <div *ngIf="errorsFiles[index]" class="error-message">
+                    {{displayErrors ? errorsFiles[index] : "Une erreur est survenue"}}
+                </div>
+                <div class="status-download">
+                    <button class="btn-close" *ngIf="!isUploading && !percentsProgress.length"
+                        (click)="removeFile(file)">
+                    </button>
+                    <app-circular-progress-bar
+                        *ngIf="isUploading && percentsProgress[index] !== 100 && !errorsFiles[index]"
+                        [progressColor]="errorsFiles[index] ? 'red' : '#36658d'"
+                        [percentage]="percentsProgress[index]" />
+                    <img class="w-100" *ngIf="percentsProgress[index] === 100"
+                        src="assets\icons\check-circle-success.svg" />
+                    <img class="w-100" *ngIf="errorsFiles[index]" src="assets\icons\cross-circle-danger.svg" />
+                </div>
+                <hr *ngIf="index + 1 !== files.length" class="hr-upload-files">
+            </div>
+        </div>
+    </div>
+    <b class="error-message" *ngIf="files.length && filesExcludedNames.length">Les fichiers
+        '{{filesExcludedNames.join("', '")}}' ne
+        respectent pas le format attendu et n'ont pas été acceptés.</b>
+</div>
