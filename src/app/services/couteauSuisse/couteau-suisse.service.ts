@@ -1,4 +1,4 @@
-import { Injectable } from '@angular/core';
+import { EventEmitter, Injectable, Output } from '@angular/core';
 import { UnitMeasure } from '../../models/types/UnitMeasure';
 
 @Injectable({
@@ -6,6 +6,11 @@ import { UnitMeasure } from '../../models/types/UnitMeasure';
 })
 export class CouteauSuisseService {
   constructor() {}
+  @Output() searchRecipeEvent = new EventEmitter<string>();
+
+  emitSearchRecipeValue(str: string) {
+    this.searchRecipeEvent.emit(str);
+  }
 
   convertFileToBase64(file: File): Promise<string> {
     return new Promise((resolve) => {

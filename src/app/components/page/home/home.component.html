@@ -1,13 +1,16 @@
-<h1>Site Recettes</h1>
-<div>
+<section id="landing-sec-1" class="flex-all-center">
+    <h1 class="text-white text-center">Kitchen-electron, vos recettes directement sur votre ordinateur</h1>
+    <div class="bg-semi-b"></div>
+</section>
+<section id="landing-sec-2" class="py-5">
     <ul class="home-recipe-list">
-        <li [routerLink]="[ '/recipe/', recipe.id ]" *ngFor="let recipe of listRecipes" class="recipe-card pe-auto">
+        <li [routerLink]="[ '/recipe/', recipe.id ]" *ngFor="let recipe of listRecipes" class="recipe-card">
             <img [src]="recipe.image || 'assets/image/image-not-enable.webp'" class="card-img-recipe" alt="...">
             <div class="card-body">
                 <p class="card-name">{{recipe.name}}</p>
-                <hr>
+                <hr class="m-0">
                 <p class="card-description">{{recipe.description}}</p>
             </div>
         </li>
     </ul>
-</div>
+</section>
