@@ -4,8 +4,9 @@ import { format } from "url";
 import { fileURLToPath } from "url";
 import fs from "fs";
 
+const __dirname = path.dirname(fileURLToPath(import.meta.url));
+
 async function onReady() {
-  const __dirname = path.dirname(fileURLToPath(import.meta.url));
   const win = new BrowserWindow({
     width: 900,
     height: 900,
@@ -43,35 +44,43 @@ app.whenReady().then(async () => {
 });
 
 ipcMain.on("read-data", (event, fileName) => {
-  fs.readFile(`./data/${fileName}.json`, "utf8", (err, data) => {
-    if (err) {
-      console.error(err);
-      event.sender.send("read-data-reply", {
-        error: "An error occurred while reading the file.",
-      });
-    } else {
-      event.sender.send("read-data-reply", { data: JSON.parse(data) });
+  fs.readFile(
+    path.join(__dirname, "data", `${fileName}.json`),
+    "utf8",
+    (err, data) => {
+      if (err) {
+        console.error(err);
+        event.sender.send("read-data-reply", {
+          error: "An error occurred while reading the file.",
+        });
+      } else {
+        event.sender.send("read-data-reply", { data: JSON.parse(data) });
+      }
     }
-  });
+  );
 });
 
 ipcMain.on("read-data-by-id", (event, fileName, id) => {
-  fs.readFile(`./data/${fileName}.json`, "utf8", (err, data) => {
-    if (err) {
-      console.error(err);
-      event.sender.send("read-data-by-id-reply", {
-        error: "An error occurred while reading the file.",
-      });
-    } else {
-      event.sender.send("read-data-by-id-reply", {
-        data: JSON.parse(data)[id],
-      });
+  fs.readFile(
+    path.join(__dirname, "data", `${fileName}.json`),
+    "utf8",
+    (err, data) => {
+      if (err) {
+        console.error(err);
+        event.sender.send("read-data-by-id-reply", {
+          error: "An error occurred while reading the file.",
+        });
+      } else {
+        event.sender.send("read-data-by-id-reply", {
+          data: JSON.parse(data)[id],
+        });
+      }
     }
-  });
+  );
 });
 
 ipcMain.on("add-data", (event, fileName, dataToSave) => {
-  const filePath = `./data/${fileName}.json`;
+  const filePath = path.join(__dirname, "data", `${fileName}.json`);
   fs.readFile(filePath, "utf8", (err, data) => {
     if (err) {
       console.error(err);
